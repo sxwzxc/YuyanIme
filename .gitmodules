@@ -1,3 +1,4 @@
 [submodule "yuyansdk"]
 	path = yuyansdk
 	url = https://github.com/gurecn/yuyansdk.git
+	branch = master
