@@ -36,12 +36,13 @@ jobs:
       - name: Prepare CI keystore
         run: |
           mkdir -p keystore
-          keytool -genkeypair -keystore keystore/ci.jks -alias ci -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=CI, OU=CI, O=CI, L=CI, ST=CI, C=CN"
-          cat > keystore/keystore.properties <<'EOF'
+          KEYSTORE_PASSWORD="$(openssl rand -hex 16)"
+          keytool -genkeypair -keystore keystore/ci.jks -alias ci -keyalg RSA -keysize 2048 -validity 10000 -storepass "$KEYSTORE_PASSWORD" -keypass "$KEYSTORE_PASSWORD" -dname "CN=CI, OU=CI, O=CI, L=CI, ST=CI, C=CN"
+          cat > keystore/keystore.properties <<EOF
           storeFile=ci.jks
-          storePassword=123456
+          storePassword=$KEYSTORE_PASSWORD
           keyAlias=ci
-          keyPassword=123456
+          keyPassword=$KEYSTORE_PASSWORD
           EOF
 
       - name: Build debug APK
